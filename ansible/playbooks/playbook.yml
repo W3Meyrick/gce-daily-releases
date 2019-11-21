@@ -1,0 +1,91 @@
+---
+- name: Playbook to configure compute instance with application and dependencies
+  hosts: all
+  become: yes
+  tasks: 
+    - name: Create Application directory
+      file:
+        path: /opt/enforcer
+        state: directory
+        owner: root
+        group: root
+        recurse: yes
+
+    - name: Copy Application file(s)
+      copy:
+        src: "{{ lookup('env','WORKSPACE') }}/main.py"
+        dest: /opt/enforcer
+        owner: root
+        group: root
+        mode: 0770
+
+    - name: Create Application Systemd Service
+      copy:
+        src: "{{ lookup('env','WORKSPACE') }}/config/systemd/ip-enforcer.service"
+        dest: /etc/systemd/system/ip-enforcer.service
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create Application Systemd Timer
+      copy:
+        src: "{{ lookup('env','WORKSPACE') }}/config/systemd/ip-enforcer.timer"
+        dest: /etc/systemd/system/ip-enforcer.timer
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Copy the Google FluentD Configuration File
+      copy:
+        src: "{{ lookup('env','WORKSPACE') }}/config/fluentd/ocean-ip-enforcer.conf"
+        dest: /etc/google-fluentd/config.d/ocean-ip-enforcer.conf
+        owner: root
+        group: root
+        mode: 0640
+
+    - name: Install PIP
+      easy_install:
+        name: pip
+        state: latest
+
+    - name: Copy PIP requirements
+      copy:
+        src: "{{ lookup('env','WORKSPACE') }}/requirements.txt"
+        dest: /opt/enforcer
+        owner: root
+        group: root
+        mode: 0660
+
+    - name: Install PIP Packages
+      pip:
+        requirements: /opt/enforcer/requirements.txt
+        extra_args: --ignore-installed
+
+    - name: Set permissions on Python 2.7 modules directory
+      file:
+        path: "{{ item }}"
+        owner: root
+        group: root
+        mode: 0755
+        recurse: yes
+      with_items:
+        - /usr/lib/python2.7/site-packages
+        - /usr/lib64/python2.7/site-packages
+
+    - name: Enable and start the systemd timer
+      service:
+        enabled: yes
+        state: started
+        name: ip-enforcer.timer
+
+    - name: Enable and start the systemd service
+      service:
+        enabled: yes
+        state: started
+        name: ip-enforcer
+
+    - name: Restart google-fluentd.service
+      service:
+        enabled: yes
+        state: restarted
+        name: google-fluentd.service

@@ -1,0 +1,8 @@
+[Unit]
+Description="Timer for IP enforcer application."
+
+[Timer]
+OnUnitActiveSec=300
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description="Service for external IP enforcer application."
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python /opt/enforcer/main.py
+
+[Install]
+WantedBy=multi-user.target

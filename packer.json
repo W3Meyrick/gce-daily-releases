@@ -1,0 +1,26 @@
+{
+    "builders": [
+        {
+            "type": "googlecompute",
+            "project_id": "gcp-core-team",
+            "zone": "europe-west2-b",
+            "source_image_family": "centos-7",
+            "image_name": "ip-enforcer-{{timestamp}}",
+            "image_family": "ip-enforcer",
+            "subnetwork": "projects/gcp-core-team/regions/europe-west2/subnetworks/gcp-core-team-europe-west2",
+            "disk_size": "60",
+            "disk_type": "pd-ssd",
+            "service_account_email": "ip-enforcer@gcp-core-team.iam.gserviceaccount.com",
+            "tags": [
+                      "ingress-ssh-all"
+                    ],
+            "ssh_username": "packer"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "ansible/playbooks/playbook.yml"            
+        }
+    ]
+}
