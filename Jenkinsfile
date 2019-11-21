@@ -116,7 +116,7 @@ def terraformApply(deployment, unique_name) {
 }
 
 pipeline {
-    agent { node { label 'rdbuild' } }   
+    agent any  
  
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '7', numToKeepStr: '5')
