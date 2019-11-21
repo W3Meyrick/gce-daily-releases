@@ -11,7 +11,7 @@ from pprint import pprint
 
 __METADATA_URL = 'http://metadata.google.internal/computeMetadata/v1/'
 __METADATA_HEADERS = {'Metadata-Flavor': 'Google'}
-__EXCLUSIONS_FILE_NAME = 'oceanEIMExclusion.jsonl'
+__EXCLUSIONS_FILE_NAME = 'exclusion.jsonl'
 __NON_EIM_EXCLUSIONS = ["xpn"]
 
 
@@ -33,7 +33,7 @@ def get_logger(name, log_file, debug=False):
     return logger
 
 
-__log = get_logger(__name__, 'ocean-ip-enforcer.log', False)
+__log = get_logger(__name__, 'ip-enforcer.log', False)
 
 
 def __get_metadata_path_param(metadata_param):
@@ -121,20 +121,20 @@ def delete_addresses(service, project, addresses):
                     consumer_name = item["users"][0].split('/')[-1]
 
                 if status == "RESERVED" and not regional:
-                    __log.info("OCEAN deleting IP address {} from {} global reservation.".format(address, project))
+                    __log.info("IP Enforcer deleting IP address {} from {} global reservation.".format(address, project))
                     try:
                         response = delete_global_address_reservation(service, project, name)
-                        _log.warning('OCEAN deleted IP address {} from {}'.format(address, project))
+                        _log.warning('IP Enforcer deleted IP address {} from {}'.format(address, project))
                         return response
                     except Exception as e:
                         __log.error(e)
 
                 elif status == "RESERVED" and regional:
-                    __log.info("OCEAN deleting IP address {} from {}".format(address, project))
+                    __log.info("IP Enforcer deleting IP address {} from {}".format(address, project))
                     try:
                         # delete_address_reservation(service, project, region, name)
                         response = service.addresses().delete(project=project, region=region, address=address).execute()
-                        _log.warning('OCEAN deleted IP address {} from {}'.format(address, project))
+                        _log.warning('IP Enforcer deleted IP address {} from {}'.format(address, project))
                         return response
                     except Exception as e:
                         __log.error(e)
@@ -142,23 +142,23 @@ def delete_addresses(service, project, addresses):
                 elif status == "IN_USE" and consumer_type == "forwardingRules":
                     if not regional:
                         try:
-                            __log.info("OCEAN deleting resource {} from {}.".format(consumer_name, project))
+                            __log.info("IP Enforcer deleting resource {} from {}.".format(consumer_name, project))
                             operation = delete_global_forwarding_rule(service, project, consumer_name)
                             wait_for_global_operation(service, project, operation['name'])
                             response = delete_global_address_reservation(service, project, name)
                             # TODO: Need if success then log success message (for each case below)
-                            __log.warning("OCEAN deleted IP address {} and "
+                            __log.warning("IP Enforcer deleted IP address {} and "
                                           "attached resource {} from {}".format(address, consumer_name, project))
                             return response
                         except Exception as e:
                             __log.error(e)
                     else:
                         try:
-                            __log.info("OCEAN deleting resource {} from {}.".format(consumer_name, project))
+                            __log.info("IP Enforcer deleting resource {} from {}.".format(consumer_name, project))
                             operation = delete_regional_forwarding_rule(service, project, zone, consumer_name)
                             wait_for_regional_operation(service, project, zone, operation['name'])
                             response = delete_address_reservation(service, project, region, item['name'])
-                            __log.warning("OCEAN deleted IP address {} and attached resource {} from {}"
+                            __log.warning("IP Enforcer deleted IP address {} and attached resource {} from {}"
                                           .format(address, consumer_name, project))
                             return response
                         except Exception as e:
@@ -167,11 +167,11 @@ def delete_addresses(service, project, addresses):
                 # TODO: Add functionality for instance groups.
                 elif status == "IN_USE" and consumer_type == "instances":
                     try:
-                        __log.info("OCEAN deleting resource {} from {}.".format(consumer_name, project))
+                        __log.info("IP Enforcer deleting resource {} from {}.".format(consumer_name, project))
                         operation = delete_compute_instance(service, project, zone, consumer_name)
                         wait_for_zonal_operation(service, project, zone, operation['name'])
                         response = delete_address_reservation(service, project, region, item['name'])
-                        __log.warning("OCEAN deleted IP address {} and attached resource {} from {}"
+                        __log.warning("IP Enforcer deleted IP address {} and attached resource {} from {}"
                                       .format(address, consumer_name, project))
                         return response
                     except Exception as e:
@@ -179,11 +179,11 @@ def delete_addresses(service, project, addresses):
 
                 elif status == "IN_USE" and consumer_type == "routers":
                     try:
-                        __log.info("OCEAN deleting resource {} from {}.".format(consumer_name, project))
+                        __log.info("IP Enforcer deleting resource {} from {}.".format(consumer_name, project))
                         operation = delete_cloud_router(service, project, zone, consumer_name)
                         wait_for_regional_operation(service, project, zone, operation['name'])
                         response = delete_address_reservation(service, project, region, item['name'])
-                        __log.warning("OCEAN deleted IP address {} and attached resource {} from {}"
+                        __log.warning("IP Enforcer deleted IP address {} and attached resource {} from {}"
                                       .format(address, consumer_name, project))
                         return response
                     except Exception as e:
@@ -191,7 +191,7 @@ def delete_addresses(service, project, addresses):
 
                 else:
                     __log.error(
-                        "OCEAN: The IP address {} is in use on {} which is not supported.".format(address, zone))
+                        "IP Enforcer: The IP address {} is in use on {} which is not supported.".format(address, zone))
                 return response
 
 
@@ -237,7 +237,7 @@ def delete_regional_forwarding_rule(service, project, zone, name):
 
 
 def wait_for_zonal_operation(service, project, zone, operation):
-    __log.info('OCEAN waiting for zonal operation to finish...')
+    __log.info('IP Enforcer waiting for zonal operation to finish...')
     while True:
         result = service.zoneOperations().get(
             project=project,
@@ -255,7 +255,7 @@ def wait_for_zonal_operation(service, project, zone, operation):
 
 
 def wait_for_regional_operation(service, project, region, operation):
-    __log.info('OCEAN waiting for regional operation to finish...')
+    __log.info('IP Enforcer waiting for regional operation to finish...')
     while True:
         result = service.regionOperations().get(
             project=project,
@@ -273,7 +273,7 @@ def wait_for_regional_operation(service, project, region, operation):
 
 
 def wait_for_global_operation(service, project, operation):
-    __log.info('OCEAN waiting for global operation to finish...')
+    __log.info('IP Enforcer waiting for global operation to finish...')
     while True:
         result = service.globalOperations().get(
             project=project,
@@ -292,19 +292,19 @@ def wait_for_global_operation(service, project, operation):
 def main():
     service = discovery.build('compute', 'v1', cache_discovery=False, credentials=None)
 
-    __log.info("Starting OCEAN IP Enforcer...")
+    __log.info("Starting IP Enforcer...")
 
-    if __FUNCTION_PROJECT_ID == 'hsbc-6320774-enforcer-test':
-        projects = [ "hsbc-6320774-enforcer-test" ]
-    elif __FUNCTION_PROJECT_ID == 'hsbc-6320774-enforcer-dev':
-        folder_id = "464555476602"
+    if __FUNCTION_PROJECT_ID == 'gcp-core-team':
+        projects = [ "gcp-core-team-test" ]
+    elif __FUNCTION_PROJECT_ID == 'gcp-core-team':
+        folder_id = "123456789"
         projects = project_ids_list(folder_id)
     elif __FUNCTION_PROJECT_ID == 'hsbc-6320774-enforcer-prod':
-        folder_id = "962521782257"
+        folder_id = "123456789"
         projects = project_ids_list(folder_id)
     else:
-        __log.error(__FUNCTION_PROJECT_ID + ' is not a valid OCEAN project')
-        raise ValueError(__FUNCTION_PROJECT_ID + ' is not a valid OCEAN project')
+        __log.error(__FUNCTION_PROJECT_ID + ' is not a valid deployment project')
+        raise ValueError(__FUNCTION_PROJECT_ID + ' is not a valid deployment project')
 
     for project in projects:
         addresses = get_addresses(service, project)
@@ -313,7 +313,7 @@ def main():
         else:
             __log.info("No external addresses found in {}.".format(project))
 
-    __log.info("OCEAN IP Enforcer SUCCESS")
+    __log.info("IP Enforcer SUCCESS")
 
 
 if __name__ == '__main__':
