@@ -3,18 +3,18 @@ String cron_format = env.BRANCH_NAME == 'master' ? '00 10 * * *' : ''
 pipeline {
     agent any
  
-    options {
-        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '7', numToKeepStr: '5')
-    }
+    // options {
+    //     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '7', numToKeepStr: '5')
+    // }
 
     environment {
         def unique_name = "gcp-core-team-${deployment}-${env.CHANGE_ID}"
         def component_name = "ip-enforcer"
     }
  
-    triggers {
-        cron(cron_format)
-    }
+    // triggers {
+    //     cron(cron_format)
+    // }
 
     stages {
         // stage('Configure Git') {
@@ -86,8 +86,8 @@ pipeline {
             }
             steps {
                 script {
-                    sh "gcloud --project=hsbc-6320774-enforcer-test compute instance-groups managed rolling-action replace gce-igm-europe-west1-t-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
-                    sh "gcloud beta --project=hsbc-6320774-enforcer-test compute instance-groups managed wait-until gce-igm-europe-west1-t-ip-enforcer --stable --region=europe-west1"   
+                    sh "gcloud --project=gcp-core-team-test compute instance-groups managed rolling-action replace gce-igm-europe-west1-t-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
+                    sh "gcloud beta --project=gcp-core-team-test compute instance-groups managed wait-until gce-igm-europe-west1-t-ip-enforcer --stable --region=europe-west1"   
                 }
             }
         }
@@ -103,7 +103,7 @@ pipeline {
                 script {
                     try {
                         def latest_image = sh (
-                            script: "gcloud --project=hsbc-6320774-enforcer-test compute images list \
+                            script: "gcloud --project=gcp-core-team-test compute images list \
                             --format='value(NAME)' --filter=family:ocean-ip-enforcer \
                             --sort-by=createTime --limit=1",
                             returnStdout: true
@@ -111,10 +111,10 @@ pipeline {
                                        
                         def now = new Date()
                         sh (
-                            script: "gcloud --project=hsbc-6320774-enforcer-dev compute images create ocean-ip-enforcer-${now.format('yyyyMMddHHmmss')} \
+                            script: "gcloud --project=gcp-core-team-dev compute images create ocean-ip-enforcer-${now.format('yyyyMMddHHmmss')} \
                             --family ocean-ip-enforcer \
                             --source-image=${latest_image} \
-                            --source-image-project=hsbc-6320774-enforcer-test --quiet",
+                            --source-image-project=gcp-core-team-test --quiet",
                             returnStatus: true
                         )
                     } catch (Exception e) {
@@ -134,8 +134,8 @@ pipeline {
             steps {
                 script {
                     def deployment = "dev"
-                    sh "gcloud --project=hsbc-6320774-enforcer-${deployment} compute instance-groups managed rolling-action replace gce-igm-europe-west1-d-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
-                    sh "gcloud beta --project=hsbc-6320774-enforcer-${deployment} compute instance-groups managed wait-until gce-igm-europe-west1-d-ip-enforcer --stable --region=europe-west1"   
+                    sh "gcloud --project=gcp-core-team-${deployment} compute instance-groups managed rolling-action replace gce-igm-europe-west1-d-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
+                    sh "gcloud beta --project=gcp-core-team-${deployment} compute instance-groups managed wait-until gce-igm-europe-west1-d-ip-enforcer --stable --region=europe-west1"   
                 }
             }
         }
@@ -148,7 +148,7 @@ pipeline {
                 script {
                     try {
                         def latest_image = sh (
-                            script: "gcloud --project=hsbc-6320774-enforcer-dev compute images list \
+                            script: "gcloud --project=gcp-core-team-dev compute images list \
                             --format='value(NAME)' --filter=family:ocean-ip-enforcer \
                             --sort-by=createTime --limit=1",
                             returnStdout: true
@@ -156,10 +156,10 @@ pipeline {
                     
                         def now = new Date()
                         sh (
-                            script: "gcloud --project=hsbc-6320774-enforcer-prod compute images create ocean-ip-enforcer-${now.format('yyyyMMddHHmmss')} \
+                            script: "gcloud --project=gcp-core-team-prod compute images create ocean-ip-enforcer-${now.format('yyyyMMddHHmmss')} \
                             --family ocean-ip-enforcer \
                             --source-image=${latest_image} \
-                            --source-image-project=hsbc-6320774-enforcer-test --quiet",
+                            --source-image-project=gcp-core-team-test --quiet",
                             returnStatus: true
                         )
                     } catch (Exception e) {
@@ -176,8 +176,8 @@ pipeline {
             steps {
                 script {
                     def deployment = "prod"
-                    sh "gcloud --project=hsbc-6320774-enforcer-${deployment} compute instance-groups managed rolling-action replace gce-igm-europe-west1-d-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
-                    sh "gcloud beta --project=hsbc-6320774-enforcer-${deployment} compute instance-groups managed wait-until gce-igm-europe-west1-d-ip-enforcer --stable --region=europe-west1"   
+                    sh "gcloud --project=gcp-core-team-${deployment} compute instance-groups managed rolling-action replace gce-igm-europe-west1-d-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
+                    sh "gcloud beta --project=gcp-core-team-${deployment} compute instance-groups managed wait-until gce-igm-europe-west1-d-ip-enforcer --stable --region=europe-west1"   
                 }
             }
         }
