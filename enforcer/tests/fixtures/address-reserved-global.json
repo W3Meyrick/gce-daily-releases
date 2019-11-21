@@ -1,0 +1,19 @@
+{
+  "global": {
+    "addresses": [
+      {
+        "address": "4.3.2.1",
+        "addressType": "EXTERNAL",
+        "creationTimestamp": "2019-11-03T15:45:23.664-08:00",
+        "description": "",
+        "id": "1234567891234567098",
+        "ipVersion": "IPV4",
+        "kind": "compute#address",
+        "name": "global-ip",
+        "networkTier": "PREMIUM",
+        "selfLink": "https://www.googleapis.com/compute/v1/projects/python-test-case/global/addresses/global-ip",
+        "status": "RESERVED"
+      }
+    ]
+  }
+}

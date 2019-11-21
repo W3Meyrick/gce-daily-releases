@@ -1,0 +1,90 @@
+{
+  "id": "projects/python-test-case/aggregated/addresses",
+  "items": {
+    "regions/us-central1": {
+      "addresses": [
+        {
+          "address": "123.123.123.123",
+          "addressType": "EXTERNAL",
+          "creationTimestamp": "2019-11-03T05:30:58.664-08:00",
+          "description": "",
+          "id": "1234567891234567890",
+          "kind": "compute#address",
+          "name": "ip1",
+          "networkTier": "PREMIUM",
+          "region": "https://www.googleapis.com/compute/v1/projects/python-test-case/regions/us-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/python-test-case/regions/us-central1/addresses/ip1",
+          "status": "RESERVED"
+        }
+      ]
+    },
+    "global": {
+      "addresses": [
+        {
+          "address": "4.3.2.1",
+          "addressType": "EXTERNAL",
+          "creationTimestamp": "2019-11-03T15:45:23.664-08:00",
+          "description": "",
+          "id": "1234567891234567098",
+          "ipVersion": "IPV4",
+          "kind": "compute#address",
+          "name": "global-ip",
+          "networkTier": "PREMIUM",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/python-test-case/global/addresses/global-ip",
+          "status": "RESERVED"
+        },
+        {
+          "address": "224.255.255.224",
+          "addressType": "EXTERNAL",
+          "creationTimestamp": "2019-11-03T15:45:23.664-08:00",
+          "description": "",
+          "id": "1234567891234567098",
+          "ipVersion": "IPV4",
+          "kind": "compute#address",
+          "name": "-in-use",
+          "networkTier": "PREMIUM",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/python-test-case/global/addresses/global-ip-in-use",
+          "status": "IN_USE",
+          "users": [
+            "https://www.googleapis.com/compute/v1/projects/python-test-case/global/forwardingRules/load-balancer"
+          ]
+        }
+      ]
+    },
+    "regions/europe-west1": {
+      "addresses": [
+        {
+          "address": "123.255.255.123",
+          "addressType": "EXTERNAL",
+          "creationTimestamp": "2019-11-06T06:10:00.301-08:00",
+          "description": "",
+          "id": "5432141234560000000",
+          "kind": "compute#address",
+          "name": "nat-auto-ip-1234560-9-10000000000",
+          "networkTier": "PREMIUM",
+          "purpose": "NAT_AUTO",
+          "region": "https://www.googleapis.com/compute/v1/projects/python-test-case/regions/europe-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/python-test-case/regions/europe-west1/addresses/nat-auto-ip-1234560-9-10000000000",
+          "status": "IN_USE",
+          "users": [
+            "https://www.googleapis.com/compute/v1/projects/gcp-core-team/regions/europe-west1/routers/python-test"
+          ]
+         }
+      ]
+    },
+    "regions/us-east1": {
+      "warning": {
+        "code": "NO_RESULTS_ON_PAGE",
+        "data": [
+          {
+            "key": "scope",
+            "value": "regions/us-east1"
+          }
+        ],
+        "message": "There are no results for scope regions/us-east1 on this page."
+      }
+    }
+  },
+    "kind": "compute#addressAggregatedList",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/python-test-case/aggregated/addresses"
+}

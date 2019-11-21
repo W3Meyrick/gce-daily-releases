@@ -1,0 +1,20 @@
+{
+  "id": "00000000-0000-0000-0000-000000000123",
+  "creationTimestamp": "2019-11-03T05:30:48.664-08:00",
+  "name": "forwarding-rule",
+  "clientOperationId": "123321456654",
+  "operationType": "delete",
+  "targetLink": "https://www.googleapis.com/some_link",
+  "targetId": "forwarding-rule",
+  "status": "DONE",
+  "statusMessage": "",
+  "user": "user1",
+  "progress": 100,
+  "insertTime": "2019-11-03T05:30:55.664-08:00",
+  "startTime": "2019-11-03T05:30:56.664-08:00",
+  "endTime": "2019-11-03T05:30:58.664-08:00",
+  "httpErrorStatusCode": 200,
+  "selfLink": "https://www.googleapis.com/some_link",
+  "description": "",
+  "kind": "compute#operation"
+}

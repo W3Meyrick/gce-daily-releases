@@ -1,0 +1,23 @@
+{
+  "regions/europe-west1": {
+    "addresses": [
+      {
+        "address": "123.255.255.123",
+        "addressType": "EXTERNAL",
+        "creationTimestamp": "2019-11-06T06:10:00.301-08:00",
+        "description": "",
+        "id": "5432141234560000000",
+        "kind": "compute#address",
+        "name": "nat-auto-ip-1234560-9-10000000000",
+        "networkTier": "PREMIUM",
+        "purpose": "NAT_AUTO",
+        "region": "https://www.googleapis.com/compute/v1/projects/python-test-case/regions/europe-west1",
+        "selfLink": "https://www.googleapis.com/compute/v1/projects/python-test-case/regions/europe-west1/addresses/nat-auto-ip-1234560-9-10000000000",
+        "status": "IN_USE",
+        "users": [
+          "https://www.googleapis.com/compute/v1/projects/gcp-core-team/regions/europe-west1/routers/python-test"
+        ]
+      }
+    ]
+  }
+}
