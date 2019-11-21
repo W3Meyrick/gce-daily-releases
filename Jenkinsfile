@@ -17,14 +17,14 @@ pipeline {
     }
 
     stages {
-        stage('Configure Git') {
-            steps {
-                withCredentials(bindings: [usernamePassword(credentialsId: 'github-un', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                    sh "git config --global credential.username ${GIT_USERNAME}"
-                    sh "git config --global credential.helper '!echo password=${GIT_PASSWORD}; echo'"
-                }
-            }
-        }
+        // stage('Configure Git') {
+        //     steps {
+        //         withCredentials(bindings: [usernamePassword(credentialsId: 'github-un', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+        //             sh "git config --global credential.username ${GIT_USERNAME}"
+        //             sh "git config --global credential.helper '!echo password=${GIT_PASSWORD}; echo'"
+        //         }
+        //     }
+        // }
 
         stage('Run Unit Tests') {
             when {
