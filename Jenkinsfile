@@ -189,7 +189,7 @@ pipeline {
                 // Store last successful commit in GCS
                 if (env.GIT_BRANCH == 'master') {
                     sh "echo ${env.GIT_COMMIT} > /tmp/last-successful-commit"
-                    sh 'gsutil cp /tmp/last-successful-commit gs://jenkins-build-files-mq/successful-commits/ocean-external-address-enforcer'
+                    sh 'gsutil cp /tmp/last-successful-commit gs://jenkins-build-files-mq/successful-commits/ip-enforcer'
                     sh 'rm -f /tmp/last-successful-commit'
                 }
 
