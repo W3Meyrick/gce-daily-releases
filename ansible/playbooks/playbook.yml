@@ -13,7 +13,7 @@
 
     - name: Copy Application file(s)
       copy:
-        src: "{{ lookup('env','WORKSPACE') }}/main.py"
+        src: "{{ lookup('env','WORKSPACE') }}/enforcer/main.py"
         dest: /opt/enforcer
         owner: root
         group: root
@@ -37,8 +37,8 @@
 
     - name: Copy the Google FluentD Configuration File
       copy:
-        src: "{{ lookup('env','WORKSPACE') }}/config/fluentd/ocean-ip-enforcer.conf"
-        dest: /etc/google-fluentd/config.d/ocean-ip-enforcer.conf
+        src: "{{ lookup('env','WORKSPACE') }}/config/fluentd/ip-enforcer.conf"
+        dest: /etc/google-fluentd/config.d/ip-enforcer.conf
         owner: root
         group: root
         mode: 0640
