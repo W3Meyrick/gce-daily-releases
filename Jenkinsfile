@@ -3,28 +3,28 @@ String cron_format = env.BRANCH_NAME == 'master' ? '00 10 * * *' : ''
 pipeline {
     agent any
  
-    // options {
-    //     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '7', numToKeepStr: '5')
-    // }
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '7', numToKeepStr: '5')
+    }
 
     environment {
         def unique_name = "gcp-core-team-${deployment}-${env.CHANGE_ID}"
         def component_name = "ip-enforcer"
     }
  
-    // triggers {
-    //     cron(cron_format)
-    // }
+    triggers {
+        cron(cron_format)
+    }
 
     stages {
-        // stage('Configure Git') {
-        //     steps {
-        //         withCredentials(bindings: [usernamePassword(credentialsId: 'github-un', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-        //             sh "git config --global credential.username ${GIT_USERNAME}"
-        //             sh "git config --global credential.helper '!echo password=${GIT_PASSWORD}; echo'"
-        //         }
-        //     }
-        // }
+        stage('Configure Git') {
+            steps {
+                withCredentials(bindings: [usernamePassword(credentialsId: 'github-un', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    sh "git config --global credential.username ${GIT_USERNAME}"
+                    sh "git config --global credential.helper '!echo password=${GIT_PASSWORD}; echo'"
+                }
+            }
+        }
 
         stage('Run Unit Tests') {
             when {
@@ -189,7 +189,7 @@ pipeline {
                 // Store last successful commit in GCS
                 if (env.GIT_BRANCH == 'master') {
                     sh "echo ${env.GIT_COMMIT} > /tmp/last-successful-commit"
-                    sh 'gsutil cp /tmp/last-successful-commit gs://jenkins_build_files/successful-commits/ocean-external-address-enforcer'
+                    sh 'gsutil cp /tmp/last-successful-commit gs://jenkins-build-files-mq/successful-commits/ocean-external-address-enforcer'
                     sh 'rm -f /tmp/last-successful-commit'
                 }
 
