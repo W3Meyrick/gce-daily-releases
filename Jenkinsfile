@@ -176,8 +176,8 @@ pipeline {
             steps {
                 script {
                     def deployment = "prod"
-                    sh "gcloud --project=gcp-core-team-${deployment} compute instance-groups managed rolling-action replace gce-igm-europe-west1-d-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
-                    sh "gcloud beta --project=gcp-core-team-${deployment} compute instance-groups managed wait-until gce-igm-europe-west1-d-ip-enforcer --stable --region=europe-west1"   
+                    sh "gcloud --project=gcp-core-team compute instance-groups managed rolling-action replace gce-igm-europe-west1-d-ip-enforcer --max-surge=3 --max-unavailable=0 --region=europe-west1"
+                    sh "gcloud beta --project=gcp-core-team compute instance-groups managed wait-until gce-igm-europe-west1-d-ip-enforcer --stable --region=europe-west1"   
                 }
             }
         }

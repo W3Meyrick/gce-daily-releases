@@ -2,26 +2,17 @@
     "builders": [
         {
             "type": "googlecompute",
-            "project_id": "hsbc-6320774-enforcer-test",
-            "zone": "europe-west1-b",
-            "source_image_project_id": "hsbc-6320774-distcompute-prod",
-            "source_image_family": "gce-imagefamily-type3-rhel7-stage2",
-            "image_name": "ocean-ip-enforcer-{{timestamp}}",
-            "image_family": "ocean-ip-enforcer",
-            "subnetwork": "projects/hsbc-6320774-vpchost-dev/regions/europe-west1/subnetworks/hsbc-6320774-vpchost-dev-vpc1-europe-west1",
-            "use_internal_ip": "true",
-            "omit_external_ip": "true",
+            "project_id": "gcp-core-team",
+            "zone": "europe-west2-b",
+            "source_image_family": "centos-7",
+            "image_name": "ip-enforcer-{{timestamp}}",
+            "image_family": "ip-enforcer",
+            "subnetwork": "projects/gcp-core-team/regions/europe-west2/subnetworks/gcp-core-team-europe-west2",
             "disk_size": "60",
             "disk_type": "pd-ssd",
-            "service_account_email": "ocean-ip-enforcer@hsbc-6320774-enforcer-test.iam.gserviceaccount.com",
+            "service_account_email": "ip-enforcer@gcp-core-team-test.iam.gserviceaccount.com",
             "tags": [
-                      "t-all-dev-in-drn-jumpservers",
-                      "fwtag-6320774-dev-all-out-mcafee",
-                      "fwtag-6320774-dev-all-in-mcafee",
-                      "fwtag-all-dev-out-alm-github",
-                      "fwtag-all-dev-in-alm-github",
-                      "fwtag-all-dev-out-efx-nexus-3-production",
-                      "tt-9820327-cmbsp20-10-83-0-0-16-a-i-all"
+                      "ingress-ssh-all"
                     ],
             "ssh_username": "packer"
         }
