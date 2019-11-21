@@ -154,7 +154,7 @@ pipeline {
                     def triggerIssueComment = currentBuild.rawBuild.getCause(org.jenkinsci.plugins.pipeline.github.trigger.IssueCommentCause)
 
                     if (triggerIssueComment) {
-                        // Determine which comment caused the build
+                        // Determine which comment caused the builds
                         if (triggerIssueComment.triggerPattern == '^/apply$') {
                             build_trigger = 'ISSUE_COMMENT_APPLY'
                         } else {
