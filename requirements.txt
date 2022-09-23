@@ -16,7 +16,7 @@ grpcio==1.24.0
 httplib2==0.14.0
 idna==2.8
 mock==3.0.5
-protobuf==3.9.2
+protobuf==3.18.3
 pyasn1==0.4.7
 pyasn1-modules==0.2.6
 pytest<5
